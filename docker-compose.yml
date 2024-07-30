@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel-app
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    entrypoint: >
+      sh -c 'php artisan config:cache && apache2-foreground'
+
+  db:
+    image: mysql:8.0
+    container_name: laravel-db
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
